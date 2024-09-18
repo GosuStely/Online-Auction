@@ -30,18 +30,18 @@ The requirements for this project have been split into functional and non-functi
 
 ### Functional
 
-|  ID   | Description                                                                                                                                                                                                                          | MoSCoW  |
-|:-----:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------:|
-|  F1   | Display a list of auctionable products or services                                                                                                                                                                                   |    M    |
-|  F2   | For each products or services show at least the following: <br> - Product or service name <br> - The price (these should be integer values) <br> - Who placed bids <br> - When will the auction end                                  | M |
-| F3 | It must be possible to search the list of auctions on a title or name                                                                                                                                                                | M | 
-| F4 | Bids cannot be removed or modified once they are made                                                                                                                                                                                | M |
-| F5 | Input is validated client side before sending it to the server                                                                                                                                                                       | M |
-| F6 | Input is validated server side                                                                                                                                                                                                       | M |
+|  ID   | Description                                                                                                                                                                                                                      | MoSCoW  |
+|:-----:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------:|
+|  F1   | Display a list of auctionable products or services                                                                                                                                                                               |    M    |
+|  F2   | For each products or services show at least the following: <br> - Product or service name <br> - The price (these should be integer values) <br> - Who placed bids <br> - When will the auction end                              | M |
+| F3 | It must be possible to search the list of auctions on a title or name                                                                                                                                                            | M | 
+| F4 | Bids cannot be removed or modified once they are made                                                                                                                                                                            | M |
+| F5 | Input is validated client side before sending it to the server                                                                                                                                                                   | M |
+| F6 | Input is validated server side                                                                                                                                                                                                   | M |
 | F7 | The list of auctions can be filtered on at least 3 attributes that are logical for the chosen service or product. I.e.: <br> - all trips in Twente<br> - all yellow sneakers<br> - all paintings that are worth over 3 million euros | M |
-| F8 | A list of bids updates in realtime if another user places a bid on the product or service                                                                                                                                            | S |
-| F9 | Only users with a `bidder` role can place bids | M |
-| F10 | Only users with an `admin` role can manage auctions | M |
+| F8 | A list of bids updates in realtime if another user places a bid on the product or service                                                                                                                                        | S |
+| F9 | Only users with a `bidder` role can place bids                                                                                                                                                                                   | M |
+| F10 | Only users with an `admin` role can manage auctions                                                                                                                                                                              | M |
 
 ### Non functional
 

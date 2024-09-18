@@ -4,7 +4,7 @@
     export let items;
     export let bids = [];
     export let startingPrice;
-    export let auctionEndDate = new Date();
+    export let auctionEndDate;
     export let category;
     const getBiggestBid = () => {
         let biggestBid = 0;
@@ -17,8 +17,12 @@
     };
     const getTimeLeft = async () => {
         const currTime = new Date();
-        // const timeLeft = currTime.getTime() - auctionEndDate.getDate();
-        return currTime;
+        const timeLeftMs = auctionEndDate - currTime.getTime();
+        const hours = Math.floor(timeLeftMs / (1000 * 60 * 60));
+        const minutes = Math.floor(
+            (timeLeftMs % (1000 * 60 * 60)) / (1000 * 60),
+        );
+        return `${hours}h ${minutes}m`;
     };
 </script>
 

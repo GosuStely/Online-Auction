@@ -1,9 +1,8 @@
 <script>
     export let filter;
-    export let handleFilter;
-    const onChange = (e) => {
-        handleFilter(e.target.name);
-        console.log(e.target.name);
+    export let handleFilterChange;
+    const onChange = (event) => {
+        handleFilterChange(event.target.checked, filter);
     };
 </script>
 

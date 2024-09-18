@@ -5,36 +5,42 @@
     import Item from "../components/Item.svelte";
     let items = [];
     let filterOptions = [];
-    let filteredItem = [];
+    let selectedFilters = new Set();
+    let filteredItems = [];
     const getItemData = async () => {
         const address = "http://localhost:3000/api/items";
         const response = await fetch(address);
         items = await response.json();
-        filteredItem = items;
         console.log(items);
-        console.log(filteredItem);
         getFilterOptions();
+        applyFilter();
     };
-    getItemData();
     const getFilterOptions = () => {
         let uniqueFilters = new Set();
         items.forEach((element) => {
             const tokens = element.category;
             uniqueFilters.add(tokens);
         });
-        uniqueFilters.forEach((e) => {
-            filterOptions.push(e);
-        });
-        filterOptions = filterOptions;
+        filterOptions = Array.from(uniqueFilters);
     };
-    const handleFilter = (filter) => {
-        items.forEach((element) => {
-            if (element.category != filter) {
-                filteredItem.push(element);
-            }
-        });
-        filteredItem = filteredItem;
+    const applyFilter = () => {
+        if (selectedFilters.size === 0) {
+            filteredItems = items;
+        } else {
+            filteredItems = items.filter((item) =>
+                selectedFilters.has(item.category),
+            );
+        }
     };
+    const handleFilterChange = (isChecked, filter) => {
+        if (isChecked) {
+            selectedFilters.add(filter);
+        } else {
+            selectedFilters.delete(filter);
+        }
+        applyFilter();
+    };
+    getItemData();
 </script>
 
 <body>
@@ -42,7 +48,7 @@
     <main class="flex">
         <div class=" min-h-dvh w-2/12 pt-20">
             {#each filterOptions as filter}
-                <Filter {filter} {handleFilter}></Filter>
+                <Filter {filter} {handleFilterChange}></Filter>
             {/each}
         </div>
         <div class=" min-h-dvh w-11/12">
@@ -50,7 +56,7 @@
                 <Search></Search>
             </div>
             <div class="grid grid-cols-4 gap-20 min-h-screen py-10 px-5">
-                {#each filteredItem as item}
+                {#each filteredItems as item}
                     <Item {...item}></Item>
                 {/each}
             </div>
