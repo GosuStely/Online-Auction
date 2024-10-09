@@ -1,10 +1,14 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
     export let placeholder = "Search...";
     let searchQuery = "";
 
     // Handle the input event
     const handleInput = (event) => {
         searchQuery = event.target.value;
+        dispatch("search", searchQuery);
     };
 </script>
 
@@ -13,8 +17,7 @@
         type="text"
         bind:value={searchQuery}
         {placeholder}
-        class="w-80 pl-10 pr-4 py-2 rounded-full border border-gray-300 shadow-sm focus:outline-none text-gray-700"
+        class="w-32 pl-8 pr-4 py-2 border rounded-full focus:outline-none text-gray-700 focus:w-42 focus:pl-4 transition-all hover:border-neon-blue md:focus:w-96"
         on:input={handleInput}
     />
-    <span class="absolute left-3 top-2.5 text-gray-400 text-sm">🔍</span>
 </div>
