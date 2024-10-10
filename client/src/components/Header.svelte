@@ -14,6 +14,6 @@
     <a
         href="/profile"
         class="bg-neon-blue-dark p-5 rounded-full hover:scale-105 hover:bg-neon-light transition-all tex"
-        >RD</a
+        >Profile</a
     >
 </header>

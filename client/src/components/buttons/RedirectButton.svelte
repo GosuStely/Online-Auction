@@ -1,11 +1,12 @@
 <script>
+    import page from "page";
     export let label = "Redirect Button";
     export let redirectPath = "/";
     export let position = "";
     export let action;
 
     const handleClick = () => {
-        window.location.pathname = redirectPath;
+        page(redirectPath);
         action();
     };
 </script>

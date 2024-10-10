@@ -47,6 +47,7 @@ export const getMysteryBox = (req, res) => {
 };
 export const postMysteryBox = (req, res) => {
     const mysteryBox = req.body;
+    mysteryBox.items = mysteryBox.items.split(',');
     console.log(mysteryBox);
     if (!mysteryBox) {
         res.status(400).json({message: "Empty Body"});

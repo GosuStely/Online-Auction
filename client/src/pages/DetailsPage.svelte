@@ -5,6 +5,7 @@
     import { get } from "svelte/store";
     import tokenStore from "../stores/tokenStore";
     import RedirectButton from "../components/buttons/RedirectButton.svelte";
+    import page from "page";
     export let params;
     const id = params.params.id.split(":")[1];
 
@@ -12,11 +13,11 @@
     let profile = null;
     let holder = "";
     let message = "";
+    const token = get(tokenStore);
     async function fetchProfile() {
-        const token = get(tokenStore);
         if (!token) {
             alert("You need to be logged in to view the profile.");
-            window.location.pathname = "/login";
+            page("/login");
             return;
         }
 
@@ -35,15 +36,20 @@
                 return data;
             } else {
                 alert(data.message);
-                window.location.pathname = "/login";
+                page("/login");
             }
         } catch (error) {
             alert("An error occurred while fetching the profile.");
-            window.location.pathname = "/login";
+            page("/login");
         }
     }
     const getItemData = async () => {
-        const response = await fetch(address);
+        const response = await fetch(address, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         const data = await response.json();
         if (response.ok) {
             console.log(data);
@@ -64,6 +70,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(data),
             });
@@ -88,6 +95,9 @@
         try {
             const response = await fetch(address, {
                 method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
             const result = await response.json();
             if (!response.ok) {

@@ -3,6 +3,7 @@
     import MainButton from "../components/buttons/MainButton.svelte";
     import TextField from "../components/TextField.svelte";
     import tokenStore from "../stores/tokenStore";
+    import page from "page";
 
     let username = "";
     let password = "";
@@ -47,7 +48,7 @@
             if (response.ok) {
                 tokenStore.set(result.token);
                 localStorage.setItem("token", result.token);
-                window.location.pathname = "/";
+                page("/");
             } else {
                 message = `Error: ${result.message}`;
             }

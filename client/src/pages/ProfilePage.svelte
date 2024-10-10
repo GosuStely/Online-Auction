@@ -2,15 +2,23 @@
     import tokenStore from "../stores/tokenStore";
     import { get } from "svelte/store";
     import Item from "../components/Item.svelte";
+    import page from "page";
+    import RedirectButton from "../components/buttons/RedirectButton.svelte";
     let items = [];
     let message = "";
     let profile = {
         isAdmin: false,
     };
+    const token = get(tokenStore);
 
     const getItemData = async () => {
         const address = `http://localhost:3000/api/items?name=${encodeURIComponent(profile.username)}`;
-        const response = await fetch(address);
+        const response = await fetch(address, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         const data = await response.json();
         if (data.message) {
             message = data.message;
@@ -20,10 +28,9 @@
         console.log(items);
     };
     async function fetchProfile() {
-        const token = get(tokenStore);
         if (!token) {
             alert("You need to be logged in to view the profile.");
-            window.location.pathname = "/login";
+            page("/login");
             return;
         }
 
@@ -42,16 +49,25 @@
                 getItemData();
             } else {
                 alert(data.message);
-                window.location.pathname = "/login";
+                page("/login");
             }
         } catch (error) {
             alert("An error occurred while fetching the profile.");
-            window.location.pathname = "/login";
+            page("/login");
         }
     }
+    const logOut = () => {
+        tokenStore.set(null);
+    };
 </script>
 
 <main class="bg-neon-black text-white">
+    <RedirectButton
+        label="Log out"
+        redirectPath="/login"
+        position="mt-5"
+        action={logOut}
+    />
     {#await fetchProfile()}
         <p class="h-screen">Loading...</p>
     {:then}

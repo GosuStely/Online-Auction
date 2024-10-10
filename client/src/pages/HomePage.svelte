@@ -6,6 +6,7 @@
     // @ts-ignore
     import tokenStore from "../stores/tokenStore";
     import { get } from "svelte/store";
+    import page from "page";
     let items = [];
     let filterOptions = [];
     let selectedFilters = new Set();
@@ -13,9 +14,15 @@
     let profile = {
         isAdmin: false,
     };
+    const token = get(tokenStore);
     const getItemData = async () => {
         const address = "http://localhost:3000/api/items";
-        const response = await fetch(address);
+        const response = await fetch(address, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         items = await response.json();
         getFilterOptions();
         applyFilter();
@@ -58,10 +65,9 @@
     };
     // @ts-ignore
     async function fetchProfile() {
-        const token = get(tokenStore);
         if (!token) {
             alert("You need to be logged in to view the profile.");
-            window.location.pathname = "/login";
+            page("/login");
             return;
         }
 
@@ -80,14 +86,13 @@
                 getItemData();
             } else {
                 alert(data.message);
-                window.location.pathname = "/login";
+                page("/login");
             }
         } catch (error) {
             alert("An error occurred while fetching the profile.");
-            window.location.pathname = "/login";
+            page("/login");
         }
     }
-    setInterval(getItemData, 60_000);
 </script>
 
 <main class="bg-neon-black text-white">

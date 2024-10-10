@@ -2,6 +2,7 @@
     import MainButton from "../components/buttons/MainButton.svelte";
     import TextField from "../components/TextField.svelte";
     import tokenStore from "../stores/tokenStore";
+    import page from "page";
 
     let email = "";
     let password = "";
@@ -23,7 +24,7 @@
 
             if (response.ok) {
                 tokenStore.set(data.token);
-                window.location.pathname = "/";
+                page("/");
             } else {
                 message = data.message;
             }

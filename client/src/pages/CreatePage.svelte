@@ -2,6 +2,9 @@
     // @ts-nocheck
     import TextField from "../components/TextField.svelte";
     import MainButton from "../components/buttons/MainButton.svelte";
+    import { get } from "svelte/store";
+    import page from "page";
+    import tokenStore from "../stores/tokenStore";
     let productName = "";
     let items = "";
     let category = "";
@@ -12,11 +15,12 @@
     auctionEndDate = auctionEndDate.toJSON().slice(0, 10);
     let message = "";
     let profile = null;
+    const token = get(tokenStore);
+
     async function fetchProfile() {
-        const token = get(tokenStore);
         if (!token) {
             alert("You need to be logged in to view the profile.");
-            window.location.pathname = "/login";
+            page("/login");
             return;
         }
 
@@ -33,16 +37,16 @@
             if (response.ok) {
                 if (!data.isAdmin) {
                     alert("You don't have permission to be here !");
-                    window.location.pathname = "/login";
+                    page("/login");
                 }
                 profile = data;
             } else {
                 alert(data.message);
-                window.location.pathname = "/login";
+                page("/login");
             }
         } catch (error) {
             alert("An error occurred while fetching the profile.");
-            window.location.pathname = "/login";
+            page("/login");
         }
     }
     const handleSubmit = async (e) => {
@@ -87,13 +91,14 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(data),
             });
             const result = await response.json();
             if (response.ok) {
                 alert("Item have been added!");
-                window.location.pathname = "/";
+                page("/");
             } else {
                 message = `Error: ${result.message}`;
             }

@@ -1,11 +1,12 @@
 import express from 'express';
 import {getAllMysteryBoxes,getMysteryBox,postMysteryBox,deleteMysteryBox, postBid} from '../controllers/MysteryBoxController.js'
+import authenticateToken from "../middleware/AuthenticateToken.js";
 const router = express.Router();
 
-router.get('/',getAllMysteryBoxes)
-router.get('/:id', getMysteryBox)
-router.post('/', postMysteryBox)
-router.delete('/:id', deleteMysteryBox)
-router.post('/:id/bids', postBid)
+router.get('/',authenticateToken, getAllMysteryBoxes)
+router.get('/:id',authenticateToken, getMysteryBox)
+router.post('/',authenticateToken, postMysteryBox)
+router.delete('/:id',authenticateToken, deleteMysteryBox)
+router.post('/:id/bids',authenticateToken, postBid)
 
 export default router;
