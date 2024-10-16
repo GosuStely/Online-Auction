@@ -13,6 +13,7 @@
     let profile = null;
     let holder = "";
     let message = "";
+    let item = null;
     const token = get(tokenStore);
     async function fetchProfile() {
         if (!token) {
@@ -53,6 +54,7 @@
         const data = await response.json();
         if (response.ok) {
             console.log(data);
+            item = data;
             holder = data.bidHolder.name;
             return data;
         } else {
@@ -78,6 +80,7 @@
             if (response.ok) {
                 message = result.message;
                 holder = profile.username;
+                await getItemData();
             } else {
                 message = result.message;
             }
@@ -122,7 +125,7 @@
 <main class="bg-neon-black text-white h-screen flex px-10 py-20 gap-10">
     {#await getItemData()}
         <p>Loading...</p>
-    {:then item}
+    {:then}
         <section class="h-full w-2/5">
             <section class="w-fit h-fit">
                 <img src={img} alt="Mystery Box" />

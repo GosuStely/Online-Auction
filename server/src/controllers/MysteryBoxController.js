@@ -1,11 +1,10 @@
 import mysteryBoxes from "../data/mysteryBoxes.js";
 import getBiggestBid from "../Helpers/BiggestBid.js";
 export const getAllMysteryBoxes = (req, res) => {
-    const { categories, name,search } = req.query;
+    const { categories, name, search } = req.query;
 
     let filteredBoxes = mysteryBoxes;
 
-    // Convert categories query to an array
     const categoriesArray = categories ? categories.split(',') : [];
 
     if (categoriesArray.length > 0) {
@@ -16,8 +15,8 @@ export const getAllMysteryBoxes = (req, res) => {
         );
     }
 
-    if (name){
-        filteredBoxes = filteredBoxes.filter((box,index) => getBiggestBid(index).name.toLowerCase().includes(name.toLowerCase()));
+    if (name) {
+        filteredBoxes = filteredBoxes.filter((box, index) => getBiggestBid(index).name.toLowerCase().includes(name.toLowerCase()));
     }
 
     if (search) {
@@ -37,12 +36,12 @@ export const getMysteryBox = (req, res) => {
     if (isNaN(id) || id < 0 || id >= mysteryBoxes.length) {
         return res.status(400).json({ message: "Invalid ID or out of bounds" });
     }
-    console.log("Sent:",mysteryBoxes[id]);
+    console.log("Sent:", mysteryBoxes[id]);
     const bidHolder = getBiggestBid(id);
     if (bidHolder.amount === 0) {
         bidHolder.amount = mysteryBoxes[id].startingPrice;
     }
-    res.status(200).json({mysteryBox: mysteryBoxes[id],bidHolder: bidHolder});
+    res.status(200).json({ mysteryBox: mysteryBoxes[id], bidHolder: bidHolder });
 
 };
 export const postMysteryBox = (req, res) => {
@@ -50,13 +49,13 @@ export const postMysteryBox = (req, res) => {
     mysteryBox.items = mysteryBox.items.split(',');
     console.log(mysteryBox);
     if (!mysteryBox) {
-        res.status(400).json({message: "Empty Body"});
+        res.status(400).json({ message: "Empty Body" });
     } else if (!mysteryBox.productName || !mysteryBox.items || !mysteryBox.startingPrice || !mysteryBox.auctionEndDate || !mysteryBox.category) {
-        res.status(400).json({message: "Wrong input : Missing arguments"});
+        res.status(400).json({ message: "Wrong input : Missing arguments" });
     } else {
         mysteryBox.bids = [];
         mysteryBoxes.push(mysteryBox);
-        res.status(200).json({message: "MysteryBox Created", mysteryBox});
+        res.status(200).json({ message: "MysteryBox Created", mysteryBox });
     }
 };
 export const deleteMysteryBox = (req, res) => {
@@ -71,18 +70,18 @@ export const deleteMysteryBox = (req, res) => {
 export const postBid = (req, res) => {
     const id = req.params.id;
     const bid = req.body;
-    console.log("received",bid);
+    console.log("received", bid);
     if (id >= mysteryBoxes.length || id < 0) {
-        res.status(400).json({message: "id out of bound"});
+        res.status(400).json({ message: "id out of bound" });
     }
     if (!bid) {
-        res.status(400).json({message: "Empty Body"});
+        res.status(400).json({ message: "Empty Body" });
     } else if (!bid.amount || !bid.name) {
-        res.status(400).json({message: "Wrong input : Missing arguments"});
+        res.status(400).json({ message: "Wrong input : Missing arguments" });
     } else {
         const bidHolder = getBiggestBid(id);
         bid.amount += bidHolder.amount;
         mysteryBoxes[id].bids.push(bid);
-        res.status(200).json({message: "Bid created", mysteryBox: mysteryBoxes[id], bidHolder:bid});
+        res.status(200).json({ message: "Bid created", mysteryBox: mysteryBoxes[id], bidHolder: bid });
     }
 }
